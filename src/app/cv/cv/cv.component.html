@@ -3,10 +3,14 @@
     <div class="alert alert-warning">
       {{ date | date : "full" | uppercase }}
     </div>
-    <app-list [cvs]="cvs"></app-list>
+    <ng-container *ngIf="cvs && cvs.length > 0">
+      <app-list [cvs]="cvs"></app-list>
+    </ng-container>
   </div>
   <div class="col">
-    <app-cv-card [cv]="selectedCv"></app-cv-card>
+    <ng-container *ngIf="selectedCv$ | async as selectedCv">
+      <app-cv-card [cv]="selectedCv"></app-cv-card>
+    </ng-container>
   </div>
 </div>
 <app-embauche></app-embauche>

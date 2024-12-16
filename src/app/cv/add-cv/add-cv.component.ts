@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from "@angular/forms";
 import { CvService } from "../services/cv.service";
@@ -41,7 +43,11 @@ export class AddCvComponent {
           validators: [Validators.required],
         },
       ],
+      
     },
+    {
+      validators: ageCinValidator(),
+    }
   );
 
   addCv() {
@@ -76,4 +82,27 @@ export class AddCvComponent {
   get cin(): AbstractControl {
     return this.form.get("cin")!;
   }
+}
+
+export function ageCinValidator(): ValidationErrors | null {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const age = formGroup.get('age')?.value; // Récupère l'âge
+    const cin = formGroup.get('cin')?.value; // Récupère le CIN
+
+    if (!cin || !age) {
+      return null; // Pas d'erreur si l'un des champs est vide
+    }
+
+    // Extrait les deux premiers caractères
+    const firstTwoDigits = parseInt(cin.substring(0, 2), 10);
+
+    // Valide selon les règles données
+    if (age >= 60 && (firstTwoDigits < 0 || firstTwoDigits > 19)) {
+      return { cinInvalidForAge: true }; // Erreur si l'âge >= 60 mais CIN invalide
+    } else if (age < 60 && firstTwoDigits <= 19) {
+      return { cinInvalidForAge: true }; // Erreur si l'âge < 60 mais CIN invalide
+    }
+
+    return null; // Pas d'erreur
+  };
 }

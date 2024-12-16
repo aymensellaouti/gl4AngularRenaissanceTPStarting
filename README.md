@@ -1,4 +1,52 @@
-# Aymen Sellaouti Advanced Training
+# Modifications
+
+1. **Used Async Pipe**:
+   - Simplified template logic in `CvComponent` and `DetailsCvComponent` by utilizing the `async pipe` to subscribe to observables directly in the template.
+   - Eliminated manual `subscribe` calls in the component TypeScript files.
+
+2. **Improved Error Handling**:
+   - Utilized `catchError` in services to handle errors and ensure graceful fallback when fetching data fails.
+   - Displayed error messages to the user using `ngx-toastr`.
+
+3. **Enhanced Code Readability**:
+   - Removed redundant code and subscriptions.
+   - Ensured proper initialization of observables using `EMPTY` or default values.
+
+### Updated Components
+
+- **`CvComponent`**:
+  - Fetches the list of CVs and displays them using the `async pipe`.
+  - Shows a detailed view of the selected CV.
+
+- **`DetailsCvComponent`**:
+  - Fetches CV details by ID and uses the `async pipe` for display.
+  - Implements a delete function with error handling and user feedback.
+
+---
+
+## What is the Async Pipe?
+
+The `async pipe` in Angular simplifies working with observables in templates. It:
+1. **Subscribes** to the observable automatically.
+2. **Unsubscribes** when the component is destroyed, preventing memory leaks.
+3. Updates the view automatically whenever new data is emitted by the observable.
+
+### Benefits of the Async Pipe
+- Reduces boilerplate code by handling subscriptions and unsubscriptions.
+- Keeps the component code clean and focused on logic.
+- Prevents memory leaks by automatically managing observable lifecycles.
+
+### Example Usage in a Template
+
+```html
+<div *ngIf="cv$ | async as cv; else loading">
+  <h1>{{ cv.name }}</h1>
+  <p>{{ cv.job }}</p>
+</div>
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>
+```
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.1.
 

@@ -1,4 +1,5 @@
-<div class="d-flex justify-content-center" *ngIf="cv">
+<div class="d-flex justify-content-center" >
+  <ng-container *ngIf="cv$ | async as cv">
   <div class="col-lg-8 push-lg-4">
     <div class="tab-content p-b-3">
       <div class="tab-pane active" id="profile">
@@ -42,4 +43,3 @@
       </div>
     </div>
   </div>
-</div>
