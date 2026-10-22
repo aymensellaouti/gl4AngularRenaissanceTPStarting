@@ -1,0 +1,82 @@
+<main class="ttc-calculator container">
+  <header class="calculator-heading">
+    <span class="eyebrow">Calcul de prix</span>
+    <h1>Calculateur TTC</h1>
+    <p>Calculez le prix toutes taxes comprises et les remises sur quantité.</p>
+  </header>
+
+  <section class="calculator-panel" aria-label="Paramètres du calcul">
+    <div class="fields">
+      <label class="field">
+        <span>Prix unitaire HT</span>
+        <div class="input-with-unit">
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            [ngModel]="unitPriceHt()"
+            (ngModelChange)="setUnitPriceHt($event)"
+            aria-label="Prix unitaire hors taxes"
+          />
+          <span aria-hidden="true">$</span>
+        </div>
+      </label>
+
+      <label class="field">
+        <span>Quantité</span>
+        <input
+          type="number"
+          min="1"
+          step="1"
+          [ngModel]="quantity()"
+          (ngModelChange)="setQuantity($event)"
+          aria-label="Quantité de pièces"
+        />
+      </label>
+
+      <label class="field">
+        <span>TVA</span>
+        <div class="input-with-unit">
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            [ngModel]="vatRate()"
+            (ngModelChange)="setVatRate($event)"
+            aria-label="Taux de TVA"
+          />
+          <span aria-hidden="true">%</span>
+        </div>
+      </label>
+    </div>
+
+    <div class="results" aria-live="polite">
+      <article class="result-card unit-price">
+        <span>Prix unitaire TTC</span>
+        <strong>{{ calculation().unitPriceTtc | number: "1.2-2" }} $</strong>
+      </article>
+
+      <article class="result-card total-price">
+        <span>Prix total TTC</span>
+        <strong>{{ calculation().totalTtc | number: "1.2-2" }} $</strong>
+      </article>
+
+      <article class="result-card discount">
+        <span>Remise ({{ calculation().discountRate * 100 }} %)</span>
+        <strong>{{ calculation().discountAmountHt | number: "1.2-2" }} $</strong>
+        <small>déduite du total HT</small>
+      </article>
+    </div>
+
+    <p class="vat-detail">
+      TVA après remise :
+      <strong>{{ calculation().vatAmount | number: "1.2-2" }} $</strong>
+    </p>
+  </section>
+
+  <aside class="discount-rules" aria-label="Règles de remise">
+    <span class="rule-label">Remises sur quantité</span>
+    <span>10 à 15 pièces : <strong>20 %</strong></span>
+    <span>Plus de 15 pièces : <strong>30 %</strong></span>
+  </aside>
+</main>
