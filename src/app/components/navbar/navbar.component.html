@@ -67,6 +67,18 @@
                         routerLinkActive="active text-primary"
                         >Rh</a
                         >
+                        <a
+                          class="nav-link"
+                          [routerLink]="['currency']"
+                          routerLinkActive="active text-primary"
+                          >Currency</a
+                          >
+                        <a
+                          class="nav-link"
+                          [routerLink]="['products-filter']"
+                          routerLinkActive="active text-primary"
+                          >Filter</a
+                          >
                         @if (!authService.isAuthenticated()) {
                           <a
                             class="nav-link"
