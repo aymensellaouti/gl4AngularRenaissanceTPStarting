@@ -1,10 +1,13 @@
 <h1>Currency Selector</h1>
 <hr>
-<select class="form-control" >
-    <option>country</option>
+<select class="form-control" [(ngModel)]="selectedCountry">
+  @for (country of countries; track country.name) {
+    <option [ngValue]="country">{{ country.name }}</option>
+  }
 </select>
-<select class="form-control">
-
-  <option >currency</option>
-
+<select class="form-control" [(ngModel)]="selectedCurrency">
+  @for (currency of selectedCountry().acceptedCurrencies; track currency) {
+    <option [value]="currency">{{ currency }}</option>
+  }
 </select>
+<p class="mt-2">Selected: {{ selectedCountry().name }} / {{ selectedCurrency() }}</p>

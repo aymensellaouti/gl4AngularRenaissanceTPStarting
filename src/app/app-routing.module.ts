@@ -19,6 +19,20 @@ const routes: Route[] = [
   { path: "rh", component: RhComponent },
   { path: "ttc", component: TtcComponent },
   {
+    path: "currency",
+    loadComponent: () =>
+      import("./tp2/currency-selector/country-currency-selector.component").then(
+        (m) => m.CountryCurrencySelectorComponent,
+      ),
+  },
+  {
+    path: "products-filter",
+    loadComponent: () =>
+      import("./tp2/products-filter/products-filter.component").then(
+        (m) => m.ProductsFilterComponent,
+      ),
+  },
+  {
     path: "cv",
     component: CvComponent,
   },
