@@ -85,6 +85,12 @@
                             routerLinkActive="active text-primary"
                             >Products Filter</a
                             >
+                          <a
+                            class="nav-link"
+                            [routerLink]="['autocomplete']"
+                            routerLinkActive="active text-primary"
+                            >Autocomplete</a
+                            >
                         @if (!authService.isAuthenticated()) {
                           <a
                             class="nav-link"
