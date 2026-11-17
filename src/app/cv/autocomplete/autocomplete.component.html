@@ -1,8 +1,78 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
-<ul>
-  @for (cv of cvs(); track cv.id) {
-    <li>{{ cv.firstname }} {{ cv.name }}</li>
+<div class="container my-4">
+  <h2>Recherche Autocomplete de CVs (Version Signaux)</h2>
+  <p class="text-muted">
+    Implémentation déclarative basée sur les Signaux, l'interopérabilité RxJS (toObservable / toSignal) et rxResource.
+  </p>
+
+  <!-- Input de recherche bidirectionnel lié au signal search -->
+  <div class="mb-3">
+    <label for="searchInput" class="form-label fw-bold">Nom du candidat :</label>
+    <input
+      id="searchInput"
+      type="text"
+      class="form-control"
+      placeholder="Rechercher par nom (ex: aymen, skander)..."
+      [(ngModel)]="search"
+    />
+  </div>
+
+  <!-- État de chargement réactif géré par la ressource -->
+  @if (cvsResource.isLoading()) {
+    <div class="alert alert-info d-flex align-items-center" role="status">
+      <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+      <span>Recherche en cours sur le serveur...</span>
+    </div>
   }
-</ul>
+
+  <!-- Gestion des erreurs retournées par la ressource -->
+  @if (cvsResource.error(); as err) {
+    <div class="alert alert-danger" role="alert">
+      Une erreur est survenue lors de la recherche. Veuillez réessayer.
+    </div>
+  }
+
+  <div class="row mt-4">
+    <!-- Liste des résultats d'autocomplete -->
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-header bg-light fw-bold">
+          Résultats de recherche
+        </div>
+        <ul class="list-group list-group-flush">
+          @for (cv of cvsResource.value(); track cv.id) {
+            <li
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              [class.active]="selectedCv()?.id === cv.id"
+              (click)="onSelectCv(cv)"
+              role="button"
+            >
+              <span>{{ cv.firstname }} {{ cv.name }}</span>
+              <span class="badge bg-secondary">{{ cv.job }}</span>
+            </li>
+          } @empty {
+            @if (!cvsResource.isLoading()) {
+              <li class="list-group-item text-muted text-center py-3">
+                @if (search().trim().length === 0) {
+                  Saisissez au moins un caractère pour lancer la recherche.
+                } @else {
+                  Aucun CV ne correspond à votre recherche.
+                }
+              </li>
+            }
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Affichage du détail du CV sélectionné (réutilisation de CvCardComponent) -->
+    <div class="col-md-6 mb-3">
+      @if (selectedCv(); as cv) {
+        <app-cv-card [cv]="cv"></app-cv-card>
+      } @else {
+        <div class="alert alert-secondary text-center py-4">
+          Cliquez sur un profil pour afficher ses détails.
+        </div>
+      }
+    </div>
+  </div>
+</div>
