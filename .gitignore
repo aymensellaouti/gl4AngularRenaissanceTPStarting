@@ -11,7 +11,7 @@
 npm-debug.log
 yarn-error.log
 
-
+/.vscode/settings.json
 # Visual Studio Code
 .history/*
 
