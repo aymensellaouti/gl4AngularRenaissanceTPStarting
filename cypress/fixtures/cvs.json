@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Sellaouti",
+    "firstname": "Aymen",
+    "cin": 2782,
+    "job": "University Assistant Professor",
+    "path": "as.jpg",
+    "age": 40,
+    "id": 1
+  },
+  {
+    "name": "Sellaouti",
+    "firstname": "Skander",
+    "cin": 1,
+    "job": "bébé",
+    "path": "",
+    "age": 4,
+    "id": 2
+  }
+]
