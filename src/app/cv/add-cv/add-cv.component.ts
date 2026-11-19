@@ -1,27 +1,25 @@
-import { Component } from "@angular/core";
-import {
-  AbstractControl,
-  FormBuilder,
-  Validators,
-} from "@angular/forms";
+import { Component, ChangeDetectionStrategy, inject } from "@angular/core";
+import { AbstractControl, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CvService } from "../services/cv.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { APP_ROUTES } from "src/config/routes.config";
 import { Cv } from "../model/cv";
+import { JsonPipe } from "@angular/common";
 
 @Component({
-  selector: "app-add-cv",
-  templateUrl: "./add-cv.component.html",
-  styleUrls: ["./add-cv.component.css"],
+    selector: "app-add-cv",
+    templateUrl: "./add-cv.component.html",
+    styleUrls: ["./add-cv.component.css"],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, ReactiveFormsModule, JsonPipe]
 })
 export class AddCvComponent {
-  constructor(
-    private cvService: CvService,
-    private router: Router,
-    private toastr: ToastrService,
-    private formBuilder: FormBuilder
-  ) {}
+  private cvService = inject(CvService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+  private formBuilder = inject(FormBuilder);
+
 
   form = this.formBuilder.group(
     {

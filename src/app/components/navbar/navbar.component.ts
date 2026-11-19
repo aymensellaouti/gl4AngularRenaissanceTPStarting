@@ -1,20 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { APP_ROUTES } from '../../../config/routes.config';
 
+
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [RouterLinkActive, RouterLink]
 })
 export class NavbarComponent {
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+  authService = inject(AuthService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+
 
   logout() {
     this.authService.logout();

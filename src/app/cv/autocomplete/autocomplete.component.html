@@ -1,3 +1,8 @@
 <form [formGroup]="form">
   <input type="text" class="form-control" formControlName="search" />
 </form>
+<ul>
+  @for (cv of cvs(); track cv.id) {
+    <li>{{ cv.firstname }} {{ cv.name }}</li>
+  }
+</ul>

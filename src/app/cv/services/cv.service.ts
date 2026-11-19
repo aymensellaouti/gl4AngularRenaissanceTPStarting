@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 import { Cv } from "../model/cv";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { API } from "../../../config/api.config";
 
@@ -8,16 +8,19 @@ import { API } from "../../../config/api.config";
   providedIn: "root",
 })
 export class CvService {
+  private http = inject(HttpClient);
+
   private cvs: Cv[] = [];
   /**
-   * Le subject permettant de créer le flux des cvs sélectionnés
+   * L'état : le cv actuellement sélectionné (écriture réservée au service)
    */
-  #selectCvSuject$ = new Subject<Cv>();
+  #selectedCv = signal<Cv | null>(null);
   /**
-   * Le flux des cvs sélectionnés
+   * Version en lecture seule exposée aux composants
    */
-  selectCv$ = this.#selectCvSuject$.asObservable();
-  constructor(private http: HttpClient) {
+  readonly selectedCv = this.#selectedCv.asReadonly();
+
+  constructor() {
     this.cvs = [
       new Cv(1, "aymen", "sellaouti", "teacher", "as.jpg", "1234", 40),
       new Cv(2, "skander", "sellaouti", "enfant", "       ", "1234", 4),
@@ -124,11 +127,11 @@ export class CvService {
   }
 
   /**
-   * Permet d'ajouter un cv au flux des cvs sélectionnés
+   * Définit le cv sélectionné
    *
-   * @param cv : Le cv à ajouter dans le flux des cvs sélectionnés
+   * @param cv : Le cv à sélectionner
    */
   selectCv(cv: Cv) {
-    this.#selectCvSuject$.next(cv);
+    this.#selectedCv.set(cv);
   }
 }
