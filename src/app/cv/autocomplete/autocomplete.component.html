@@ -4,14 +4,12 @@
     Implémentation déclarative basée sur les Signaux, l'interopérabilité RxJS (toObservable / toSignal) et rxResource.
   </p>
 
-  <!-- Input de recherche bidirectionnel lié au signal search -->
   <div class="mb-3">
     <label for="searchInput" class="form-label fw-bold">Nom du candidat :</label>
     <input id="searchInput" type="text" class="form-control" placeholder="recherchii  par nom (pas prénom)"
       [(ngModel)]="search" />
   </div>
 
-  <!-- État de chargement réactif géré par la ressource -->
   @if (cvsResource.isLoading()) {
   <div class="alert alert-info d-flex align-items-center" role="status">
     <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -19,7 +17,6 @@
   </div>
   }
 
-  <!-- Gestion des erreurs retournées par la ressource -->
   @if (cvsResource.error(); as err) {
   <div class="alert alert-danger" role="alert">
     Une erreur est survenue! . Veuillez réessayer.
@@ -27,12 +24,12 @@
   }
 
   <div class="row mt-4">
-    <!-- Liste des résultats d'autocomplete -->
     <div class="col-md-6 mb-3">
       <div class="card">
         <div class="card-header bg-light fw-bold">
           Résultats de recherche
         </div>
+        @if (!cvsResource.error()) {
         <ul class="list-group list-group-flush">
           @for (cv of cvsResource.value(); track cv.id) {
           <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -52,10 +49,10 @@
           }
           }
         </ul>
+        }
       </div>
     </div>
 
-    <!-- Affichage du détail du CV sélectionné (réutilisation de CvCardComponent) -->
     <div class="col-md-6 mb-3">
       @if (selectedCv(); as cv) {
       <app-cv-card [cv]="cv"></app-cv-card>

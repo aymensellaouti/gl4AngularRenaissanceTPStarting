@@ -106,8 +106,8 @@ export class CvService {
    * @returns Observable<Cv[]>
    */
   selectByName(name: string): Observable<Cv[]> {
-    const search = `{"where":{"name":{"like":"%${name}%"}}}`;
-    const params = new HttpParams().set("filter", search);
+    const filter = JSON.stringify({ where: { name: { like: `%${name}%` } } });
+    const params = new HttpParams().set("filter", filter);
     return this.http.get<Cv[]>(API.cv, { params });
   }
   /**
